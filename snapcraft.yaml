@@ -50,7 +50,9 @@ parts:
     plugin: make
     override-build: |
       cd Quake
-      snapcraftctl build
+      sed -i "s/\$(exec_prefix)/games/\$(exec_prefix)/bin/g" Makefile
+      make -j4
+      make install
     build-packages:
       - make
       - build-essential
