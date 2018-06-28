@@ -30,10 +30,10 @@ confinement: strict
 apps:
   vkquake:
     command: desktop-launch vkquake
-    plugs: [ wayland, x11, desktop, home, opengl, pulseaudio, removable-media, network ]
+    plugs: [ wayland, x11, desktop, home, opengl, pulseaudio, removable-media, network, joystick ]
   vkquake-launch:
     command: desktop-launch vkquake-launch
-    plugs: [ wayland, x11, desktop, home, opengl, pulseaudio, removable-media, network ]
+    plugs: [ wayland, x11, desktop, home, opengl, pulseaudio, removable-media, network, joystick ]
 
 slots:
   quake-engine:
@@ -80,3 +80,9 @@ parts:
       - share/
       - usr/
     after: [ desktop-glib-only ]
+  wrapper:
+    source: .
+    plugin: dump
+    organize:
+      vkquake-launch: bin/vkquake-launch
+    after: [ vkquake ]
