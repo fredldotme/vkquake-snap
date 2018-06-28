@@ -50,7 +50,7 @@ parts:
     plugin: make
     override-build: |
       cd Quake
-      sed -i "s/\$(exec_prefix)/games/\$(exec_prefix)/bin/g" Makefile
+      sed -i "s/\$(exec_prefix)\/games/\$(exec_prefix)\/bin/g" Makefile
       make -j4
       make install
     build-packages:
