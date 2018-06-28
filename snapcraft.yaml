@@ -1,0 +1,82 @@
+name: vkquake
+version: 1.00.0
+grade: stable
+summary: A Quake 1 port using Vulkan.
+description: |
+  vkQuake is a Quake 1 port using Vulkan instead of OpenGL for rendering. It is based on the popular QuakeSpasm port and runs all mods compatible with it like Arcane Dimensions or In The Shadows.
+  
+  Compared to QuakeSpasm vkQuake also features a software Quake like underwater effect, has better color precision, generates mipmap for water surfaces at runtime and has native support for anti-aliasing and AF.
+  
+  vkQuake also serves as a Vulkan demo application that shows basic usage of the API. For example it demonstrates render passes & sub passes, pipeline barriers & synchronization, compute shaders, push & specialization constants, CPU/GPU parallelism and memory pooling.
+  
+  - Note to snap packagers:
+   Additionally, other snaps can consume its content via a content interface plug and use 'vkquake-launch' to start the engine. Consuming snaps could use following snapcraft.yaml snippet to add the interface.
+   
+  plugs:
+    quake-engine:
+    content: quake-engine
+    interface: content
+    target: $SNAP/quake-engine
+    default-provider: vkquake:quake-engine
+   
+  Within the consuming snap the content would be exposed at "$SNAP/quake-engine", ie:
+     /snap/the-consuming-snap/current/quake-engine
+     /var/lib/snapd/snap/the-consuming-snap/current/quake-engine
+   
+   Under certain circumstances it could be necessary to manually connect the interface, ie:
+     snap connect the-consuming-snap:quake-engine vkquake:quake-engine
+confinement: strict
+
+apps:
+  vkquake:
+    command: desktop-launch vkquake
+    plugs: [ wayland, x11, desktop, home, opengl, pulseaudio, removable-media, network ]
+  vkquake-launch:
+    command: desktop-launch vkquake-launch
+    plugs: [ wayland, x11, desktop, home, opengl, pulseaudio, removable-media, network ]
+
+slots:
+  quake-engine:
+    content: quake-engine
+    interface: content
+    read:
+      - $SNAP
+
+parts:
+  vkquake:
+    source: https://github.com/Novum/vkQuake.git
+    source-type: git
+    source-tag: 1.00.0
+    plugin: make
+    override-build: |
+      cd Quake
+      snapcraftctl build
+    build-packages:
+      - make
+      - build-essential
+      - libgl1-mesa-dev
+      - libsdl2-dev
+      - libsdl2-image-dev
+      - libsdl2-mixer-dev
+      - libsdl2-net-dev
+      - libpulse-dev
+      - libvulkan-dev
+      - libwayland-dev
+      - libvorbis-dev
+      - libmad0-dev
+    stage-packages:
+      - libsdl2-2.0-0
+      - libsdl2-image-2.0-0
+      - libsdl2-mixer-2.0-0
+      - libsdl2-net-2.0-0
+      - libpulse0
+      - libvorbis0a
+      - libmad0
+      - libwayland-client0
+      - zenity
+    prime:
+      - bin/
+      - lib/
+      - share/
+      - usr/
+    after: [ desktop-glib-only ]
