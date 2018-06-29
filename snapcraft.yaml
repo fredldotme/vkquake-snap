@@ -72,6 +72,7 @@ parts:
     plugin: make
     override-build: |
       cd Quake
+      mkdir -p $(SNAPCRAFT_PART_INSTALL)/bin
       sed -i "s/prefix ?= \/usr/prefix ?= \$(SNAPCRAFT_PART_INSTALL)/g" Makefile
       sed -i "s/\/games/\/bin/g" Makefile
       make -j$(nproc)
