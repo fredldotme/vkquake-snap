@@ -14,10 +14,10 @@ description: |
    
   plugs:
     quake-engine:
-    content: quake-engine
-    interface: content
-    target: $SNAP/quake-engine
-    default-provider: vkquake:quake-engine
+      content: quake-engine
+      interface: content
+      target: $SNAP/quake-engine
+      default-provider: vkquake:quake-engine
    
   Within the consuming snap the content would be exposed at "$SNAP/quake-engine", ie:
      /snap/the-consuming-snap/current/quake-engine
@@ -43,6 +43,27 @@ slots:
       - $SNAP
 
 parts:
+  sdl2-with-vulkan:
+    source: https://www.libsdl.org/release/SDL2-2.0.8.tar.gz
+    source-type: tar
+    plugin: autotools
+    install-via: prefix
+    configflags:
+      - --prefix=/usr
+    build-packages:
+      - make
+      - build-essential
+      - libgl1-mesa-dev
+      - libpulse-dev
+      - libvulkan-dev
+      - libwayland-dev
+      - libx11-dev
+      - libxi-dev
+      - libxcursor-dev
+      - libxinerama-dev
+      - libxkbcommon-dev
+      - libxcb-randr0-dev
+      - x11proto-xinerama-dev
   vkquake:
     source: https://github.com/Novum/vkQuake.git
     source-type: git
@@ -57,20 +78,12 @@ parts:
       - make
       - build-essential
       - libgl1-mesa-dev
-      - libsdl2-dev
-      - libsdl2-image-dev
-      - libsdl2-mixer-dev
-      - libsdl2-net-dev
       - libpulse-dev
       - libvulkan-dev
       - libwayland-dev
       - libvorbis-dev
       - libmad0-dev
     stage-packages:
-      - libsdl2-2.0-0
-      - libsdl2-image-2.0-0
-      - libsdl2-mixer-2.0-0
-      - libsdl2-net-2.0-0
       - libpulse0
       - libvorbis0a
       - libmad0
@@ -80,7 +93,7 @@ parts:
       - bin/
       - lib/
       - usr/
-    after: [ desktop-glib-only ]
+    after: [ sdl2-with-vulkan, desktop-glib-only ]
   wrapper:
     source: .
     plugin: dump
