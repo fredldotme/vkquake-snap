@@ -50,7 +50,7 @@ parts:
     plugin: autotools
     install-via: prefix
     configflags:
-      - --prefix=/usr
+      - --prefix=$SNAPCRAFT_STAGE/usr
     build-packages:
       - make
       - build-essential
@@ -65,6 +65,12 @@ parts:
       - libxkbcommon-dev
       - libxcb-randr0-dev
       - x11proto-xinerama-dev
+    stage:
+      - usr/bin
+      - usr/lib
+      - usr/include
+    prime:
+      - usr/lib
   vkquake:
     source: https://github.com/Novum/vkQuake.git
     source-type: git
@@ -73,6 +79,8 @@ parts:
     override-build: |
       cd Quake
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
+      export C_INCLUDE_PATH=$SNAPCRAFT_STAGE/usr/include
+      export CXX_INCLUDE_PATH=$SNAPCRAFT_STAGE/usr/include
       make -j$(nproc)
       install -m 755 vkquake $SNAPCRAFT_PART_INSTALL/bin/
     build-packages:
