@@ -95,6 +95,7 @@ parts:
     stage-packages:
       - libpulse0
       - libvorbis0a
+      - libvorbisfile3
       - libmad0
       - libwayland-client0
       - zenity
