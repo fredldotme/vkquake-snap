@@ -23,7 +23,7 @@ description: |
      /snap/the-consuming-snap/current/quake-engine
      /var/lib/snapd/snap/the-consuming-snap/current/quake-engine
    
-   Under certain circumstances it could be necessary to manually connect the interface, ie:
+  Under certain circumstances it could be necessary to manually connect the interface, ie:
      snap connect the-consuming-snap:quake-engine vkquake:quake-engine
 confinement: strict
 
@@ -49,8 +49,6 @@ parts:
     source-checksum: sha512/673c6058b8692a36b4a3594456b10ef6051efe79e4fb644421fc5c76b11fd68b895840a2c8b72413418c378733e2993d33f19767d0d7ed101eda6310bd70c869
     plugin: autotools
     install-via: prefix
-    configflags:
-      - --prefix=/usr
     build-packages:
       - make
       - build-essential
@@ -66,12 +64,12 @@ parts:
       - libxcb-randr0-dev
       - x11proto-xinerama-dev
     stage:
-      - usr/bin
-      - usr/lib
-      - usr/include
-      - usr/share
+      - bin
+      - lib
+      - include
+      - share
     prime:
-      - usr/lib
+      - lib
   vkquake:
     source: https://github.com/Novum/vkQuake.git
     source-type: git
@@ -80,8 +78,8 @@ parts:
     override-build: |
       cd Quake
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
-      export C_INCLUDE_PATH=$SNAPCRAFT_STAGE/usr/include
-      export CXX_INCLUDE_PATH=$SNAPCRAFT_STAGE/usr/include
+      export C_INCLUDE_PATH=$SNAPCRAFT_STAGE/include
+      export CXX_INCLUDE_PATH=$SNAPCRAFT_STAGE/include
       make -j$(nproc)
       install -m 755 vkquake $SNAPCRAFT_PART_INSTALL/bin/
     build-packages:
