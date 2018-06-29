@@ -50,7 +50,7 @@ parts:
     plugin: autotools
     install-via: prefix
     configflags:
-      - --prefix=$SNAPCRAFT_STAGE/usr
+      - --prefix=/usr
     build-packages:
       - make
       - build-essential
@@ -69,6 +69,7 @@ parts:
       - usr/bin
       - usr/lib
       - usr/include
+      - usr/share
     prime:
       - usr/lib
   vkquake:
