@@ -74,15 +74,16 @@ parts:
     source: https://github.com/Novum/vkQuake.git
     source-type: git
     source-tag: 1.00.0
+    source-subdir: Quake
     plugin: make
     override-build: |
-      cd Quake
       mkdir -p $SNAPCRAFT_PART_INSTALL/bin
       export C_INCLUDE_PATH=$SNAPCRAFT_STAGE/include
       export CXX_INCLUDE_PATH=$SNAPCRAFT_STAGE/include
       export LIBRARY_PATH=$SNAPCRAFT_STAGE/lib
-      make -j$(nproc)
-      install -m 755 vkquake $SNAPCRAFT_PART_INSTALL/bin/
+      snapcraftctl build
+    artifacts:
+      - vkquake
     build-packages:
       - make
       - build-essential
