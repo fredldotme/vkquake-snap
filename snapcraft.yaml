@@ -108,6 +108,10 @@ parts:
       - libvorbisfile3
       - libmad0
       - zenity
+    override-build: |
+      craftctl default
+      mkdir -p $CRAFT_PART_INSTALL/usr/bin
+      cp -a $CRAFT_PART_BUILD/vkquake $CRAFT_PART_INSTALL/usr/bin/
     after: [ sdl2-with-vulkan ]
   wrapper:
     source: .
