@@ -60,7 +60,7 @@ if [ "x$@" == "x" ]; then
 fi
 
 if [ "x$GAMEFILES_PATH" != "x" ]; then
-    exec "$SNAP/usr/bin/vkquake" "-basedir" "$GAMEFILES_PATH"
+    exec "$SNAP/bin/vkquake" "-basedir" "$GAMEFILES_PATH"
 else
-    exec "$SNAP/usr/bin/vkquake" "$@"
+    exec "$SNAP/bin/vkquake" "$@"
 fi
