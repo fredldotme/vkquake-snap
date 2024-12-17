@@ -94,6 +94,8 @@ parts:
       - meson
       - ninja-build
       - build-essential
+      - glslang-tools
+      - spirv-tools
       - libgl1-mesa-dev
       - libpulse-dev
       - libvulkan-dev
