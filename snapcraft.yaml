@@ -88,17 +88,10 @@ parts:
     source: https://github.com/Novum/vkQuake.git
     source-type: git
     source-tag: 1.31.3
-    plugin: make
-    override-build: |
-      cd Quake
-      mkdir -p $CRAFT_PART_INSTALL/bin
-      export C_INCLUDE_PATH=$CRAFT_STAGE/include
-      export CXX_INCLUDE_PATH=$CRAFT_STAGE/include
-      export LIBRARY_PATH=$CRAFT_STAGE/lib
-      make -j$(nproc)
-      install -m 755 vkquake $CRAFT_PART_INSTALL/bin/
+    plugin: meson
     build-packages:
-      - make
+      - meson
+      - ninja-build
       - build-essential
       - libgl1-mesa-dev
       - libpulse-dev
