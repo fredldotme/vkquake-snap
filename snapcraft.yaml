@@ -115,7 +115,8 @@ parts:
       chmod 755 $CRAFT_PART_INSTALL/bin/vkquake
     after: [ sdl2-with-vulkan ]
     prime:
-      - bin/vkquake
+      - bin/
+      - usr/
   wrapper:
     source: .
     plugin: nil
