@@ -116,7 +116,7 @@ parts:
       - bin/
       - lib/
       - usr/
-    after: [ sdl2-with-vulkan, desktop-glib-only ]
+    after: [ sdl2-with-vulkan ]
   wrapper:
     source: .
     plugin: dump
