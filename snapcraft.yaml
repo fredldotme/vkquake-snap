@@ -110,8 +110,8 @@ parts:
       - zenity
     override-build: |
       craftctl default
-      mkdir -p $CRAFT_PART_INSTALL/usr/bin
-      cp -a $CRAFT_PART_BUILD/vkquake $CRAFT_PART_INSTALL/usr/bin/
+      mkdir -p $CRAFT_PART_INSTALL/bin
+      cp -a $CRAFT_PART_BUILD/vkquake $CRAFT_PART_INSTALL/bin/
     after: [ sdl2-with-vulkan ]
   wrapper:
     source: .
