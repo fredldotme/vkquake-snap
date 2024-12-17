@@ -1,6 +1,7 @@
 name: vkquake
-version: 1.00.0
+version: 1.31.3
 grade: stable
+base: core24
 summary: A Quake 1 port using Vulkan.
 description: |
   Note:
@@ -29,14 +30,26 @@ description: |
   Under certain circumstances it could be necessary to manually connect the interface, ie:
      snap connect the-consuming-snap:quake-engine vkquake:quake-engine
 confinement: strict
+compression: lzo
+
+platforms:
+  amd64:
+  arm64:
+  armhf:
+
+plugs:
+  gpu-2404:
+    interface: content
+    target: $SNAP/gpu-2404
+    default-provider: mesa-2404
 
 apps:
   vkquake:
     command: desktop-launch vkquake
-    plugs: [ wayland, x11, desktop, home, opengl, pulseaudio, removable-media, network, joystick ]
+    plugs: [ wayland, x11, desktop, home, opengl, audio-playback, removable-media, network, joystick ]
   vkquake-launch:
     command: desktop-launch vkquake-launch
-    plugs: [ wayland, x11, desktop, home, opengl, pulseaudio, removable-media, network, joystick ]
+    plugs: [ wayland, x11, desktop, home, opengl, audio-playback, removable-media, network, joystick ]
 
 slots:
   quake-engine:
@@ -47,11 +60,9 @@ slots:
 
 parts:
   sdl2-with-vulkan:
-    source: https://www.libsdl.org/release/SDL2-2.0.8.tar.gz
+    source: https://www.libsdl.org/release/SDL2-2.30.10.tar.gz
     source-type: tar
-    source-checksum: sha512/673c6058b8692a36b4a3594456b10ef6051efe79e4fb644421fc5c76b11fd68b895840a2c8b72413418c378733e2993d33f19767d0d7ed101eda6310bd70c869
     plugin: autotools
-    install-via: prefix
     build-packages:
       - make
       - build-essential
@@ -76,16 +87,16 @@ parts:
   vkquake:
     source: https://github.com/Novum/vkQuake.git
     source-type: git
-    source-tag: 1.00.0
+    source-tag: 1.31.3
     plugin: make
     override-build: |
       cd Quake
-      mkdir -p $SNAPCRAFT_PART_INSTALL/bin
-      export C_INCLUDE_PATH=$SNAPCRAFT_STAGE/include
-      export CXX_INCLUDE_PATH=$SNAPCRAFT_STAGE/include
-      export LIBRARY_PATH=$SNAPCRAFT_STAGE/lib
+      mkdir -p $CRAFT_PART_INSTALL/bin
+      export C_INCLUDE_PATH=$CRAFT_STAGE/include
+      export CXX_INCLUDE_PATH=$CRAFT_STAGE/include
+      export LIBRARY_PATH=$CRAFT_STAGE/lib
       make -j$(nproc)
-      install -m 755 vkquake $SNAPCRAFT_PART_INSTALL/bin/
+      install -m 755 vkquake $CRAFT_PART_INSTALL/bin/
     build-packages:
       - make
       - build-essential
@@ -100,7 +111,6 @@ parts:
       - libvorbis0a
       - libvorbisfile3
       - libmad0
-      - libwayland-client0
       - zenity
     prime:
       - bin/
@@ -113,3 +123,16 @@ parts:
     organize:
       vkquake-launch: bin/vkquake-launch
     after: [ vkquake ]
+  gpu-snap:
+    after:
+      - sdl2-with-vulkan
+      - vkquake
+      - wrapper
+    source: https://github.com/canonical/gpu-snap.git
+    plugin: dump
+    override-prime: |
+      craftctl default
+      ${CRAFT_PART_SRC}/bin/gpu-2404-cleanup mesa-2404
+      rm -rf ${CRAFT_PRIME}/usr/share/{doc,man}
+    prime:
+      - bin/gpu-2404-wrapper
