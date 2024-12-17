@@ -37,19 +37,23 @@ platforms:
   arm64:
   armhf:
 
+apps:
+  vkquake:
+    command-chain:
+      - bin/gpu-2404-wrapper
+    command: bin/vkquake
+    plugs: [ wayland, x11, desktop, home, opengl, audio-playback, removable-media, network, joystick ]
+  vkquake-launch:
+    command-chain:
+      - bin/gpu-2404-wrapper
+    command: bin/vkquake-launch
+    plugs: [ wayland, x11, desktop, home, opengl, audio-playback, removable-media, network, joystick ]
+
 plugs:
   gpu-2404:
     interface: content
     target: $SNAP/gpu-2404
     default-provider: mesa-2404
-
-apps:
-  vkquake:
-    command: desktop-launch vkquake
-    plugs: [ wayland, x11, desktop, home, opengl, audio-playback, removable-media, network, joystick ]
-  vkquake-launch:
-    command: desktop-launch vkquake-launch
-    plugs: [ wayland, x11, desktop, home, opengl, audio-playback, removable-media, network, joystick ]
 
 slots:
   quake-engine:
@@ -63,6 +67,8 @@ parts:
     source: https://www.libsdl.org/release/SDL2-2.30.10.tar.gz
     source-type: tar
     plugin: autotools
+    autotools-configure-parameters:
+      - --prefix=/usr
     build-packages:
       - make
       - build-essential
@@ -77,13 +83,8 @@ parts:
       - libxkbcommon-dev
       - libxcb-randr0-dev
       - x11proto-xinerama-dev
-    stage:
-      - bin
-      - lib
-      - include
-      - share
     prime:
-      - lib
+      - usr/lib
   vkquake:
     source: https://github.com/Novum/vkQuake.git
     source-type: git
