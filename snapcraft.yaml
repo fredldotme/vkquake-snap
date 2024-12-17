@@ -113,9 +113,10 @@ parts:
     after: [ sdl2-with-vulkan ]
   wrapper:
     source: .
-    plugin: dump
-    organize:
-      vkquake-launch: bin/vkquake-launch
+    plugin: nil
+    override-build: |
+      mkdir -p $CRAFT_PART_INSTALL/bin
+      cat $CRAFT_PART_SRC/bin/vkquake-launch | sed "s/@@ARCH_TRIPLET@@/$CRAFT_ARCH_TRIPLET_BUILD_FOR/g" > $CRAFT_PART_INSTALL/bin/vkquake-launch
     after: [ vkquake ]
   gpu-snap:
     after:
