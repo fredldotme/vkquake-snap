@@ -3,6 +3,6 @@ Type=Application
 Name=vkQuake
 Comment=A Quake 1 port using Vulkan.
 Icon=${SNAP}/snap/gui/vkquake.png
-Exec=vkquake.vkquake-launch
+Exec=vkquake
 Categories=Game;ActionGame;
 Keywords=first;person;shooter;quake;
