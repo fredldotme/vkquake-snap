@@ -114,6 +114,8 @@ parts:
       cp -a $CRAFT_PART_BUILD/vkquake $CRAFT_PART_INSTALL/bin/
       chmod 755 $CRAFT_PART_INSTALL/bin/vkquake
     after: [ sdl2-with-vulkan ]
+    prime:
+      - bin/vkquake
   wrapper:
     source: .
     plugin: nil
@@ -121,6 +123,9 @@ parts:
       mkdir -p $CRAFT_PART_INSTALL/bin
       cat $CRAFT_PART_SRC/vkquake-launch | sed "s/@@ARCH_TRIPLET@@/$CRAFT_ARCH_TRIPLET_BUILD_FOR/g" > $CRAFT_PART_INSTALL/bin/vkquake-launch
       chmod 755 $CRAFT_PART_INSTALL/bin/vkquake-launch
+    prime:
+      - bin/vkquake-launch
+      - snap/gui/vkquake.png
     after: [ vkquake ]
   gpu-snap:
     after:
