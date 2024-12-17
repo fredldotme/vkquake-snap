@@ -112,6 +112,7 @@ parts:
       craftctl default
       mkdir -p $CRAFT_PART_INSTALL/bin
       cp -a $CRAFT_PART_BUILD/vkquake $CRAFT_PART_INSTALL/bin/
+      chmod 755 $CRAFT_PART_INSTALL/bin/vkquake
     after: [ sdl2-with-vulkan ]
   wrapper:
     source: .
